@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>CryptoZombies front-end</title>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Include web3.js here -->
+    <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+    <script language="javascript" type="text/javascript" src="cryptozombies_abi.js"></script>
+  </head>
+  <body>
+
+    <script>
+      //Now that we've initialized Web3.js with MetaMask's Web3 provider, let's set it up to talk to our smart contract. Web3.js will need 2 things to talk to your contract: its address and its ABI.
+      // 2. Start code here
+      var cryptoZombies;
+      function startApp() {
+        var cryptoZombiesAddress = "YOUR_CONTRACT_ADDRESS";
+        cryptoZombies = new web3js.eth.Contract(cryptoZombiesABI, cryptoZombiesAddress);
+      }
+
+//call is used for view and pure functions. It only runs on the local node, and won't create a transaction on the blockchain.
+//Review: view and pure functions are read-only and don't change state on the blockchain. They also don't cost any gas, and the user won't be prompted to sign a transaction with MetaMask.
+//Using Web3.js, you would call a function named myMethod with the parameter 123 as follows:
+//myContract.methods.myMethod(123).call()
+      // 1. Define `zombieToOwner` here
+      function zombieToOwner(id) {
+        return cryptoZombies.methods.zombieToOwner(id).call()
+      } 
+
+      // 2. Define `getZombiesByOwner` here
+      function getZombiesByOwner(owner) {
+        return cryptoZombies.methods.getZombiesByOwner(owner).call()
+      }
+      
+      //You can use this boilerplate code in all the apps you create in order to require users to have Metamask to use your DApp.
+      //Infura is a service that maintains a set of Ethereum nodes with a caching layer for fast reads, which you can access for free through their API. Using Infura as a provider, you can reliably send and receive messages to/from the Ethereum blockchain without needing to set up and maintain your own node.
+      //Metamask is a browser extension for Chrome and Firefox that lets users securely manage their Ethereum accounts and private keys, and use these accounts to interact with websites that are using Web3.js. (If you haven't used it before, you'll definitely want to go and install it — then your browser is Web3 enabled, and you can now interact with any website that communicates with the Ethereum blockchain!).
+      //And as a developer, if you want users to interact with your DApp through a website in their web browser (like we're doing with our CryptoZombies game), you'll definitely want to make it Metamask-compatible.
+      //Metamask injects their web3 provider into the browser in the global JavaScript object web3. So your app can check to see if web3 exists, and if it does use web3.currentProvider as its provider.
+      window.addEventListener('load', function() {
+    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+      if (typeof web3 !== 'undefined') {
+    // Use Mist/MetaMask's provider
+      web3js = new Web3(web3.currentProvider);
+    } else {
+    // Handle the case where the user doesn't have web3. Probably
+    // show them a message telling them to install Metamask in
+    // order to use our app.
+  }
+
+  // Now you can start your app & access web3js freely:
+  startApp()
+
+})
+    </script>
+  </body>
+</html>
